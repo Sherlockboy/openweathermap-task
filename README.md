@@ -63,3 +63,78 @@ Fork this repository and make your changes in that forked repo. Once you finish 
 - @Sherlockboy
 
 Also, update the readme with the instructions of how to run the project and get the data locally.
+
+
+# Instructions: 
+
+1. Clone the repository:
+
+```
+git clone <repository-url>
+cd <project-directory>
+```
+
+2. Install dependencies:
+
+```
+composer install
+```
+
+3. Copy .env.example to .env and configure your database settings as well as in config/database and OpenWeatherMap API key as OPENWEATHERMAP_API_KEY:
+
+```
+cp .env.example .env
+```
+
+4. Generate application key:
+
+```
+php artisan key:generate
+```
+
+5. Run migrations:
+
+```
+php artisan migrate
+```
+
+6. Seed the database with Uzbekistan cities:
+
+```
+php artisan db:seed --class=CitiesSeeder
+```
+
+7. Set up service or cron job to run the following command hourly, I used systemd services to run hourly, but you can use Laravel Scheduler which is configured in Console/Kernel.php with crontab:
+
+```
+php artisan weather:fetch
+```
+
+8. Be sure that your laravel queue is processed
+
+```
+php artisan queue:work
+```
+
+9. Set up your testing environment by creating env.testing, where APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=:memory: and put your APP_KEY from .env file
+
+10. Clear config cache by
+
+```
+php artisan config:clear
+```
+
+11. Repeat steps 5 and 6 for testing environment with command
+
+```
+php artisan migrate --env=testing
+php artisan db:seed --class=CitiesSeeder --env=testing
+```
+
+12. Run Unit Tests by 
+
+```
+php artisan test --env=testing
+```
+
+13. You can check API Swagger Documentation at http://yourserver/api/documentation
