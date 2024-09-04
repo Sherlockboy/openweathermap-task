@@ -137,3 +137,4 @@ php artisan db:seed --class=CitiesSeeder --env=testing
 php artisan test --env=testing
 ```
 
+13. You can check API Swagger Documentation at http://yourserver/api/documentation
